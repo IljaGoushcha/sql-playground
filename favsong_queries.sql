@@ -1,3 +1,5 @@
+\c favsongs
+
 SELECT a.name, s.song, s.album, s.time 
   FROM artists a, songs s
   WHERE S.artist_id = a.id;
@@ -34,7 +36,6 @@ SELECT artists.name, songs.song, songs.album, songs.rating
   LEFT JOIN artists
   ON (songs.artist_id = artists.id)
   ORDER BY songs.rating DESC;
-
 /*
           name          |            song            |               album               | rating 
 ------------------------+----------------------------+-----------------------------------+--------
@@ -104,6 +105,53 @@ GROUP BY a.name, s.song,s.rating;
 ------------+-------+--------+-----
  Kanye West | Power |      3 |   3
 */
+
+
+
+-- create a trigger that deletes a song that corresponds to the artist 
+-- if we delete an artist from the artist table
+CREATE FUNCTION delete_songs() RETURNS TRIGGER AS $_$
+BEGIN
+  DELETE FROM songs WHERE songs.artist_id = OLD.id;
+  RETURN OLD;
+END $_$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_artist_songs 
+BEFORE DELETE 
+ON artists 
+FOR EACH ROW EXECUTE PROCEDURE delete_songs();
+
+SELECT artists.id, artists.name FROM artists
+  WHERE artists.name = 'Kanye West';
+
+-- DELETE FROM artists WHERE name = 'Kanye West';
+
+-- SELECT * FROM songs;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
