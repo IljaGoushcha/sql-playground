@@ -106,7 +106,18 @@ GROUP BY a.name, s.song,s.rating;
  Kanye West | Power |      3 |   3
 */
 
+SELECT a.name, s.song
+FROM songs s
+JOIN artists a ON a.id = s.artist_id
+WHERE s.song = 'Jigsaw Falling Into Place';
+/*
+   name    |           song            
+-----------+---------------------------
+ Radiohead | Jigsaw Falling Into Place
+(1 row)
 
+
+*/
 
 -- create a trigger that deletes a song that corresponds to the artist 
 -- if we delete an artist from the artist table
@@ -124,6 +135,7 @@ FOR EACH ROW EXECUTE PROCEDURE delete_songs();
 SELECT artists.id, artists.name FROM artists
   WHERE artists.name = 'Kanye West';
 
+-- I didn't like Yeezy anyway. 
 -- DELETE FROM artists WHERE name = 'Kanye West';
 
 -- SELECT * FROM songs;
